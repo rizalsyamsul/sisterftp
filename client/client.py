@@ -29,7 +29,7 @@
 from xmlrpc.client import ServerProxy
 import os
 
-proxy = ServerProxy('26.229.87.196:4899')
+proxy = ServerProxy('http://26.229.87.196:9999')
 
 if __name__ == '__main__':
     dr = os.getcwd()
