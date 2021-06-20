@@ -3,18 +3,19 @@ import xmlrpc.client
 import xmlrpc.client as xmlrpclib
 import os
 import time
+import socket
 
 proxy = ServerProxy('http://localhost:9999') #tinggal diganti ip server nanti
-
+hostname = socket.gethostname()
+ip_address = socket.gethostbyname(hostname)
 
 #fungsi untuk upload
 def up_file(name):
     print("Uploading {}".format(name))
     try:
         with open(name, "rb") as handle:
-            ip = handle.address_string()
             dt = xmlrpclib.Binary(handle.read())
-            proxy.Upload(dt, name, ip)
+            proxy.Upload(dt, name, hostname, ip_address)
     except Exception as e:
         print(e)
 
@@ -26,7 +27,7 @@ def down_file(name,ls):
         print("Downloading: {}".format(name))
         try:
             with open(name, "wb") as handle:
-                dt = proxy.Download(name).data
+                dt = proxy.Download(name, hostname, ip_address).data
                 handle.write(dt)
                 handle.close()
         except Exception as e:
@@ -66,6 +67,13 @@ while True:
             # elif temp2 == 5:
             #     varx = proxy.ls()
             #     print(type(varx))
+            # elif temp2 == 5:
+            #     hostname = socket.gethostname()
+            #     ip_address = socket.gethostbyname(hostname)
+            #     print(hostname,' ',ip_address)
+            elif temp2 == 5:
+                varx = proxy.cu()
+                print(varx)
         
     elif temp == 2:
         break
