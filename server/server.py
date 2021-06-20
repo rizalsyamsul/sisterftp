@@ -3,10 +3,10 @@ from xmlrpc.server import SimpleXMLRPCRequestHandler
 import xmlrpc.client
 import os
 
-ip = "localhost" #tinggal diganti ip server nanti
+ip = "26.229.87.196" #tinggal diganti ip server nanti
 port = 9999
-server = SimpleXMLRPCServer((ip,port), logRequests=True)
-# rh = RequestHandler(SimpleXMLRPCRequestHandler) 
+server = SimpleXMLRPCServer((ip,port), logRequests=True, allow_none=True)
+# rh = RequestHandler(SimpleXMLRPCRequestHandler)
 
 
 class Akun:
@@ -16,19 +16,27 @@ class Akun:
     self.jumlahup = 0
     self.jumlahdown = 0
 
-arrAkun = []
+arr_jml = []
 
-# def cariAkun(ip):
-#     for i in range (len(arrAkun)):
-#         if arrAkun[i].ip == ip:
-#             return i
-#             break
-#     i = -1            
-#     return i
+def rankUp(array):
+	return sorted(array, reverse=True, key = lambda  x: x['jml_up'])
+
+def rankDwn(array):
+	return sorted(array, reverse=True, key = lambda  x: x['jml_dwn'])
+
+
+def add_akun(ip_address):
+    global jml
+    global arr_jml
+    jml["ip"] = ip_address
+    arr_jml.append(jml)
+server.register_function(add_akun, 'ak')
 
 def cek_upload():
-#     # return arrAkun[cariAkun(ip_address)].jumlahup
-    return x
+    global jml
+    print("Client IP : ",jml["ip"])
+    print("jumlah upload : ",jml["jml_up"])
+    print("jumlah download : ",jml["jml_dwn"])
 server.register_function(cek_upload, 'cu')
 
 
@@ -41,17 +49,15 @@ server.register_function(list_directory, 'ls')
 #fungsi untuk menerima upload dari client
 def up(data,name, hostname, ip_address):
     try:
-        with open(name, "wb") as handle:
-            # idx = cariAkun(ip_address)
-            # if idx != -1:
-            #     arrAkun[idx].jumlahup = arrAkun[idx].jumlahup +1
-            # else:
-            #     akunx = Akun(hostname,ip)
-            #     arrAkun.append(akunx)
-            f = data.data
-            handle.write(f)
-            # x += 1
-            return True
+        global jml
+        global arr_jml
+        if ip_address == jml["ip"]:
+            with open(name, "wb") as handle:
+                f = data.data
+                handle.write(f)
+                jml["jml_up"] += 1
+                arr_jml.append(jml)
+                return True
     except Exception as e:
         print(e)
 server.register_function(up, 'Upload')
@@ -59,18 +65,41 @@ server.register_function(up, 'Upload')
 #fungsi untuk mengirim data ke client
 def down(name, hostname, ip_address):
     try:
-        with open(name, "rb") as handle:
-            return xmlrpc.client.Binary(handle.read())
-            handle.close()
+        global jml
+        global arr_jml
+        if ip_address == jml["ip"]:
+            jml["jml_dwn"] += 1
+            arr_jml.append(jml)
+            with open(name, "rb") as handle:
+                return xmlrpc.client.Binary(handle.read())
+                handle.close()
     except Exception as e:
         print(e)
 server.register_function(down, 'Download')
 
+def rank():
+    global jml
+    global arr_jml
+    topU = rankUp(arr_jml)[0]["ip"]
+    up = rankUp(arr_jml)[0]["jml_up"]
+    print("Client Dengan Upload Terbanyak: ",topU)
+    print("Dengan Upload : ",up)
+    topD = rankDwn(arr_jml)[0]["ip"]
+    dwn = rankDwn(arr_jml)[0]["jml_dwn"]
+    print("Client Dengan Download Terbanyak: ",topD)
+    print("Dengan Download : ",dwn)
+server.register_function(rank, 'rank')
+
+
 
 if __name__ == '__main__':
     try:
+        jml = {
+            "ip": "",
+            "jml_up": 0,
+            "jml_dwn": 0
+        }
         print('Serving...')
-        x = 0
         server.serve_forever()
     except KeyboardInterrupt:
         print('Exiting')
