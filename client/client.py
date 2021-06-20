@@ -66,16 +66,8 @@ while True:
                 print(proxy.ls())
             elif temp2 == 4:
                 break
-            # elif temp2 == 5:
-            #     varx = proxy.ls()
-            #     print(type(varx))
-            # elif temp2 == 5:
-            #     hostname = socket.gethostname()
-            #     ip_address = socket.gethostbyname(hostname)
-            #     print(hostname,' ',ip_address)
             elif temp2 == 5:
-                varx = proxy.cu()
-                print(varx)
+                proxy.cu(ip_address)
             elif temp2 ==6:
                 proxy.rank()
 

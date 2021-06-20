@@ -32,11 +32,14 @@ def add_akun(ip_address):
     arr_jml.append(jml)
 server.register_function(add_akun, 'ak')
 
-def cek_upload():
+def cek_upload(ip_address):
     global jml
-    print("Client IP : ",jml["ip"])
-    print("jumlah upload : ",jml["jml_up"])
-    print("jumlah download : ",jml["jml_dwn"])
+    if ip_address == jml["ip"]:
+        print("Client IP : ",jml["ip"])
+        print("jumlah upload : ",jml["jml_up"])
+        print("jumlah download : ",jml["jml_dwn"])
+    else:
+        print('wrong ip')
 server.register_function(cek_upload, 'cu')
 
 
@@ -89,8 +92,6 @@ def rank():
     print("Client Dengan Download Terbanyak: ",topD)
     print("Dengan Download : ",dwn)
 server.register_function(rank, 'rank')
-
-
 
 if __name__ == '__main__':
     try:
