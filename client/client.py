@@ -19,15 +19,18 @@ def up_file(name):
         print(e)
 
 #fungsi untuk download
-def down_file(name):
-    print("Downloading: {}".format(name))
-    try:
-        with open(name, "wb") as handle:
-            dt = proxy.Download(name).data
-            handle.write(dt)
-            handle.close()
-    except Exception as e:
-        print(e)
+def down_file(name,ls):
+    if name not in ls :
+        print('\n file tidak ditemukan')
+    else:
+        print("Downloading: {}".format(name))
+        try:
+            with open(name, "wb") as handle:
+                dt = proxy.Download(name).data
+                handle.write(dt)
+                handle.close()
+        except Exception as e:
+            print(e)
 
 while True:
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -47,7 +50,8 @@ while True:
                 print(proxy.ls())
                 print("file yang akan di akan di download dari server: ")
                 file = input()
-                down_file(file)
+                ls = proxy.ls()
+                down_file(file,ls)
             elif temp2 == 2:
                 print("file yang ada di client:")
                 dir = os.getcwd()
@@ -59,6 +63,9 @@ while True:
                 print(proxy.ls())
             elif temp2 == 4:
                 break
+            # elif temp2 == 5:
+            #     varx = proxy.ls()
+            #     print(type(varx))
         
     elif temp == 2:
         break
