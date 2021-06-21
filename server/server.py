@@ -36,6 +36,7 @@ def add_akun(ip_address):
     inf = {"ip": "","up": 0,"down": 0}
     inf["ip"] = str(ip_address)
     arr_ip.append(inf)
+    print("IP: {} connected as client".format(ip_address))
 server.register_function(add_akun, 'ak')
 
 #fungsi untuk melihat list direktori dalam server
@@ -55,6 +56,7 @@ def up(data,name,ip_address):
                 f = data.data
                 handle.write(f)
                 arr_ip[idx]["up"] += 1
+                print("Add: {} from client".format(name))
                 return True
         else:
             print('wrong ip')
@@ -70,6 +72,7 @@ def down(name, ip_address):
         idx = searchakun(ip)
         if ip == arr_ip[idx]["ip"]:
             arr_ip[idx]["down"] += 1
+            print("Sending: {} to client".format(name))
             with open(name, "rb") as handle:
                 return xmlrpc.client.Binary(handle.read())
                 handle.close()
