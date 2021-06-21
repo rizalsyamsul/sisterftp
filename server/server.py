@@ -7,7 +7,6 @@ ip = "26.229.87.196" #tinggal diganti ip server nanti
 port = 9999
 server = SimpleXMLRPCServer((ip,port), logRequests=True, allow_none=True)
 
-
 def rankUp(array):
 	return sorted(array, reverse=True, key = lambda  x: x['up'])
 

@@ -45,7 +45,7 @@ while True:
         os.system('cls' if os.name == 'nt' else 'clear')
         while True:
             print('\nMenu FTP')
-            print(' 1.download \n 2.upload \n 3.isi server \n 4.quit')
+            print(' 1.download \n 2.upload \n 3.isi server \n 4.info \n 5.ranking \n 6.quit')
             print("pilih menu: ")
             temp2 = int(input())
             if temp2 == 1:
@@ -65,11 +65,11 @@ while True:
             elif temp2 == 3:
                 print(proxy.ls())
             elif temp2 == 4:
-                break
-            elif temp2 == 5:
                 proxy.cu(ip_address)
-            elif temp2 ==6:
+            elif temp2 == 5:
                 proxy.rank()
+            elif temp2 ==6:
+                break
 
     elif temp == 2:
         break
