@@ -35,10 +35,10 @@ def cek_upload(ip_address):
     global inf
     global arr_ip
     idx = searchakun(arr_ip,ip_address)
-    if ip_address == arr_ip[idx]inf["ip"]:
-        print("Client IP : ",arr_ip[idx]inf["ip"])
-        print("jumlah upload : ",arr_ip[idx]inf["up"])
-        print("jumlah download : ",arr_ip[idx]inf["down"])
+    if ip_address == arr_ip[idx]["ip"]:
+        print("Client IP : ",arr_ip[idx]["ip"])
+        print("jumlah upload : ",arr_ip[idx]["up"])
+        print("jumlah download : ",arr_ip[idx]["down"])
     else:
         print('wrong ip')
 server.register_function(cek_upload, 'cu')
@@ -60,7 +60,7 @@ def up(data,name, hostname, ip_address):
                 f = data.data
                 handle.write(f)
                 idx = searchakun(arr_ip,ip_address)
-                arr_ip[idx]inf["up"] += 1
+                arr_ip[idx]["up"] += 1
                 return True
     except Exception as e:
         print(e)
@@ -72,8 +72,8 @@ def down(name, hostname, ip_address):
         global inf
         global arr_ip
         idx = searchakun(arr_ip,ip_address)
-        if ip_address == arr_ip[idx]inf["ip"]:
-            arr_ip[idx]inf["down"] += 1
+        if ip_address == arr_ip[idx]["ip"]:
+            arr_ip[idx]["down"] += 1
             with open(name, "rb") as handle:
                 return xmlrpc.client.Binary(handle.read())
                 handle.close()
