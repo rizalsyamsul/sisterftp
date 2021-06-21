@@ -105,7 +105,7 @@ def rank():
     print("Dengan Total Upload : ",up)
     sort2 = mostDownload(arr_ip)
     ip_down = sort2[0]["ip"]
-    down = sort2[0]["up"]
+    down = sort2[0]["down"]
     print("IP Client Dengan Download Terbanyak: ",ip_down)
     print("Dengan Total Download : ",down)
 server.register_function(rank, 'rank')
