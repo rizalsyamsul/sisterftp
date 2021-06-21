@@ -1,24 +1,26 @@
+#continue
+
+#library
 from xmlrpc.client import ServerProxy
-import xmlrpc.client
 import xmlrpc.client as xmlrpclib
 import os
 import time
 import socket
 
+#inisiasi ServerProxy untuk connect client ke server
 proxy = ServerProxy('http://26.229.87.196:9999') #tinggal diganti ip server nanti
 
-
-#fungsi untuk upload
+#fungsi tambahan untuk upload
 def up_file(name, ip_address):
     print("Uploading {}".format(name))
     try:
         with open(name, "rb") as handle:
             dt = xmlrpclib.Binary(handle.read())
-            proxy.Upload(dt, name, hostname, ip_address)
+            proxy.Upload(dt, name, ip_address)
     except Exception as e:
         print(e)
 
-#fungsi untuk download
+#fungsi tambahan untuk download
 def down_file(name,ls,ip_address):
     if name not in ls :
         print('\n file tidak ditemukan')
@@ -26,15 +28,16 @@ def down_file(name,ls,ip_address):
         print("Downloading: {}".format(name))
         try:
             with open(name, "wb") as handle:
-                dt = proxy.Download(name, hostname, ip_address).data
+                dt = proxy.Download(name, ip_address).data
                 handle.write(dt)
                 handle.close()
         except Exception as e:
             print(e)
 
+#main function
 while True:
     os.system('cls' if os.name == 'nt' else 'clear')
-    print("\nSelamat Datang di Salty Spitton \n Apakah anda ingin connect? \n 1. Ya \n 2. Tidak")
+    print("\nSelamat Datang di FTP dari Salty Spitton \n Apakah anda ingin connect? \n 1. Ya \n 2. Tidak")
     temp = int(input())
     if temp == 1:
         hostname = socket.gethostname()
